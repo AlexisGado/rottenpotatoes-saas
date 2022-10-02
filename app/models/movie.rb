@@ -4,16 +4,26 @@ class Movie < ActiveRecord::Base
     ['G','PG','PG-13','R']
   end
 
-  def self.with_ratings(ratings_list)
+  def self.with_ratings(ratings_hash, column_hash)
     # if ratings_list is an array such as ['G', 'PG', 'R'], retrieve all
     #  movies with those ratings
     # if ratings_list is nil, retrieve ALL movies
 
-    if ratings_list.nil?
-      Movie.all
+
+    if ratings_hash.nil?
+      mvs = Movie.all
     else
-      Movie.where(rating: ratings_list.keys)
+      mvs = Movie.where(rating: ratings_hash.keys)
     end
+
+    if column_hash.has_key?(:release_date)
+      mvs.order('release_date DESC')
+    elsif column_hash.has_key?(:title)
+      mvs.order('title')
+    else
+      mvs
+    end
+
 
   end
 end
