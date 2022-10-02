@@ -10,11 +10,13 @@ class MoviesController < ApplicationController
     @all_ratings = Movie.all_ratings
 
     if params.has_key?(:ratings) || params.has_key?(:column)
-      ratings = params[:ratings]
-      @sort_column = params[:column]
-      session[:ratings] = ratings
-      session[:column] = @sort_column
+      session[:ratings] = params[:ratings]
+      session[:column] = params[:column]
+      redirect_to movies_path
     else
+      if session[:ratings].nil?
+        session[:ratings] = Hash[@all_ratings.collect { |v| [v, '1'] }]
+      end
       ratings = session[:ratings]
       @sort_column = session[:column]
     end
