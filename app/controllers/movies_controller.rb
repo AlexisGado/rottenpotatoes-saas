@@ -12,14 +12,19 @@ class MoviesController < ApplicationController
     if params.has_key?(:ratings) || params.has_key?(:column)
       session[:ratings] = params[:ratings]
       session[:column] = params[:column]
-      redirect_to movies_path
     else
-      if session[:ratings].nil?
-        session[:ratings] = Hash[@all_ratings.collect { |v| [v, '1'] }]
-      end
-      ratings = session[:ratings]
-      @sort_column = session[:column]
+      redirect_to movies_path({
+        :ratings => session[:ratings],
+        :column => session[:column]
+      })
     end
+
+    if session[:ratings].nil?
+      session[:ratings] = Hash[@all_ratings.collect { |v| [v, '1'] }]
+    end
+
+    ratings = session[:ratings]
+    @sort_column = session[:column]
 
     @ratings_hash = ratings.nil? ? {} : ratings
     @ratings_to_show = @ratings_hash.keys
