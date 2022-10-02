@@ -4,8 +4,7 @@
 <%#  Part 1: Start here... %>
 
 <%= form_tag movies_path, method: :get, id: 'ratings_form' do %>
-  <%= hidden_field_tag :title , @column_hash[:title] %>
-  <%= hidden_field_tag :release_date , @column_hash[:release_date] %>
+  <%= hidden_field_tag :column , @sort_column %>
   Include:
   <% @all_ratings.each do |rating| %>
     <div class="form-check form-check-inline">
@@ -19,9 +18,9 @@
 <table class="table table-striped col-md-12" id="movies">
   <thead>
     <tr>
-      <th class="<%= @column_hash.has_key?(:title) ? 'hilite bg-warning' : "" %>"><a id="title_header" href="<%=movies_path({:title => '1', :ratings => @ratings_hash})%>">Movie Title</a></th>
+      <th class="<%= @sort_column == 'title' ? 'hilite bg-warning' : "" %>"><a id="title_header" href="<%=movies_path({:column => 'title', :ratings => @ratings_hash})%>">Movie Title</a></th>
       <th>Rating</th>
-      <th class="<%= @column_hash.has_key?(:release_date) ? 'hilite bg-warning' : "" %>"><a id="release_date_header" href="<%=movies_path({:release_date => '1', :ratings => @ratings_hash})%>">Release Date</a></th>
+      <th class="<%= @sort_column == 'release_date' ? 'hilite bg-warning' : "" %>"><a id="release_date_header" href="<%=movies_path({:column => 'release_date', :ratings => @ratings_hash})%>">Release Date</a></th>
       <th>More Info</th>
     </tr>
   </thead>
